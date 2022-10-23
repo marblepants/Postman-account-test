@@ -1,0 +1,382 @@
+{
+	"info": {
+		"_postman_id": "fd1d0c87-e0a4-405e-89c8-4502bf52b383",
+		"name": "Account API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23427091"
+	},
+	"item": [
+		{
+			"name": "Create user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"Name is correct\", function () {",
+							"    pm.expect(jsonData.name).to.eql(pm.variables.get('randomFullName'));",
+							"});",
+							"pm.test(\"City is correct\", function () {",
+							"    pm.expect(jsonData.city).to.eql(pm.variables.get('randomCity'));",
+							"});",
+							"pm.test(\"Gender is correct\", function () {",
+							"    pm.expect(jsonData.gender).to.eql(pm.variables.get('randomGender'));",
+							"});",
+							"pm.test(\"Age is correct\", function () {",
+							"    pm.expect(jsonData.age).to.eql(pm.variables.get('randomNumber'));",
+							"});",
+							"",
+							"//save id for deletion test",
+							"pm.globals.set(\"generatedId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"{{randomFullName}}\",\n    \"city\":\"{{randomCity}}\",\n    \"age\":\"{{randomNumber}}\",\n    \"gender\":\"{{randomGender}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://em.staging.api.onereach.ai/http/1b3bebb7-e882-4f1e-a74b-ee381bfa69d6/users",
+					"protocol": "https",
+					"host": [
+						"em",
+						"staging",
+						"api",
+						"onereach",
+						"ai"
+					],
+					"path": [
+						"http",
+						"1b3bebb7-e882-4f1e-a74b-ee381bfa69d6",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create - invalid body",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body(\"Validation error: gender is invalid\");",
+							"});",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"Sashko2\",\n    \"city\":\"Kyiv\",\n    \"age\":\"21\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://em.staging.api.onereach.ai/http/1b3bebb7-e882-4f1e-a74b-ee381bfa69d6/users",
+					"protocol": "https",
+					"host": [
+						"em",
+						"staging",
+						"api",
+						"onereach",
+						"ai"
+					],
+					"path": [
+						"http",
+						"1b3bebb7-e882-4f1e-a74b-ee381bfa69d6",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"Name is correct\", function () {",
+							"    pm.expect(jsonData.name).to.eql(pm.variables.get('randomFullName'));",
+							"});",
+							"pm.test(\"City is correct\", function () {",
+							"    pm.expect(jsonData.city).to.eql(pm.variables.get('randomCity'));",
+							"});",
+							"pm.test(\"Gender is correct\", function () {",
+							"    pm.expect(jsonData.gender).to.eql(pm.variables.get('randomGender'));",
+							"});",
+							"pm.test(\"Age is correct\", function () {",
+							"    pm.expect(jsonData.age).to.eql(pm.variables.get('randomNumber'));",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"{{randomFullName}}\",\n    \"city\":\"{{randomCity}}\",\n    \"age\":\"{{randomNumber}}\",\n    \"gender\":\"{{randomGender}}\",\n    \"id\":\"{{randomId}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://em.staging.api.onereach.ai/http/1b3bebb7-e882-4f1e-a74b-ee381bfa69d6/users",
+					"protocol": "https",
+					"host": [
+						"em",
+						"staging",
+						"api",
+						"onereach",
+						"ai"
+					],
+					"path": [
+						"http",
+						"1b3bebb7-e882-4f1e-a74b-ee381bfa69d6",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "See user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Age is correct\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.age).to.eql(32);",
+							"});",
+							"pm.test(\"City is correct\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.city).to.eql('West Norris');",
+							"});",
+							"pm.test(\"Gender is correct\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.gender).to.eql('female');",
+							"});",
+							"pm.test(\"Name is correct\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.eql('Amber Friesen');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://em.staging.api.onereach.ai/http/1b3bebb7-e882-4f1e-a74b-ee381bfa69d6/users?id=7a60bc66-3c6c-45b6-938b-1efd0e4da96e",
+					"protocol": "https",
+					"host": [
+						"em",
+						"staging",
+						"api",
+						"onereach",
+						"ai"
+					],
+					"path": [
+						"http",
+						"1b3bebb7-e882-4f1e-a74b-ee381bfa69d6",
+						"users"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "7a60bc66-3c6c-45b6-938b-1efd0e4da96e"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"User is deleted\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://em.staging.api.onereach.ai/http/1b3bebb7-e882-4f1e-a74b-ee381bfa69d6/users?id={{generatedId}}",
+					"protocol": "https",
+					"host": [
+						"em",
+						"staging",
+						"api",
+						"onereach",
+						"ai"
+					],
+					"path": [
+						"http",
+						"1b3bebb7-e882-4f1e-a74b-ee381bfa69d6",
+						"users"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{generatedId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"//this section is mostly to store random variables for testing",
+					"",
+					"",
+					"//storing name",
+					"pm.globals.set('randomFullName', pm.variables.replaceIn('{{$randomFullName}}'));",
+					"",
+					"//storing city",
+					"pm.globals.set('randomCity', pm.variables.replaceIn('{{$randomCity}}'));",
+					"",
+					"//storing number for age value",
+					"pm.globals.set('randomNumber', Math.floor(Math.random() * 99 + 1));",
+					"",
+					"//generating and storing gender value",
+					"function makeGender(){",
+					"    if(Math.random() < 0.5){",
+					"        return \"male\";",
+					"    }",
+					"    else{",
+					"        return \"female\";",
+					"    }",
+					"};",
+					"pm.globals.set('randomGender', makeGender());",
+					"",
+					"//definition to select a random id value from a list",
+					"Array.prototype.random = function () {",
+					"  return this[Math.floor((Math.random()*this.length))];",
+					"};",
+					"",
+					"function get_random (list) {",
+					"  return list[Math.floor((Math.random()*list.length))];",
+					"}",
+					"",
+					"//list of pre-generated id's",
+					"//can be safely expanded by generating a new user with a \"create\" request",
+					"//and adding it separated by a comma",
+					"const idList = [",
+					"    '80ddf6f4-2549-4ec2-ad4c-d331d2055af6',",
+					"    '5b889c8d-53ca-4a90-aa57-df42d217dfc8',",
+					"    'a96876c6-8bea-4a29-8a07-90926bdb53d5',",
+					"    '907b95a5-afe7-430d-b92c-357186e3e29c'",
+					"];",
+					"",
+					"//storing a random id",
+					"pm.globals.set('randomId', get_random(idList));"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
