@@ -1,2 +1,2 @@
 # Postman-account-test
-Automated tests created in Postan for a sample account API
+Automated collection of tests created in Postman for a sample account API
